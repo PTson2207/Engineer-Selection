@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as ptl
+import matplotlib.pyplot as plt
 import scipy.stats as stats
 import pylab
 
@@ -17,3 +17,40 @@ def diagnostic_plots(df, variable):
     stats.probplot(df[variable], dist="norm", plot=pylab)
 
     plt.show()
+
+# log_transform
+def log_transform(data, cols=[]):
+    """
+    logarithmic transformation
+    """
+
+    data_copy = data.copy(deep=True)
+    for i in cols:
+        data_copy[i + '_log'] = np.log(data_copy[i] + 1)
+        print('Variable' + i + 'Q-Q plot')
+        diagnostic_plots(data_copy, str(i + '_log'))
+    return data_copy
+
+def reciprocal_transform(data, cols=[]):
+    """
+    Reciprocal transformation
+    """
+    data_copy = data.copy(deep=True)
+    for i in cols:
+        data_copy[i + '_reciprocal'] = 1/(data_copy[i])
+        print('Variable' + i + 'Q-Q plot')
+        diagnostic_plots(data_copy, str(i + '_reciprocal'))
+
+    return data_copy
+
+def square_root_transform(data, cols=[]):
+    """
+    square root transform
+    """
+    data_copy = data.copy(deep=True)
+    for i in cols:
+        data_copy[i + '_square_root'] = (data_copy[i])**(0.5)
+        print('Variable' + i + ' Q-Q plot')
+        diagnostic_plots(data_copy, str(i + '_square_root'))
+
+    return data_copy
