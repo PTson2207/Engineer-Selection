@@ -54,3 +54,14 @@ def square_root_transform(data, cols=[]):
         diagnostic_plots(data_copy, str(i + '_square_root'))
 
     return data_copy
+
+def exp_transform(data, coef, cols=[]):
+    """
+    Exp transformation
+    """
+    data_copy = data.copy(deep=True)
+    for i in cols:
+        data_copy[i + "_exp"] = (data_copy[i])**coef
+        print('Variable ' + i + ' Q-Q plot')
+        diagnostic_plots(data_copy, str(i+'_exp'))
+    return data_copy
