@@ -53,3 +53,35 @@ def impute_outlier_with_arbitrary(data, outlier_index, value, col=[]):
     for i in col:
         data_copy.loc[outlier_index, i] = value
     return data_copy
+
+def windsorization(data, col, para, strategy='both'):
+    """
+    mã hóa trên cùng và mã hóa dưới cùng (giới hạn mức tối đa của một phân phối ở một giá trị đặt tùy ý, ngược lại)
+    """
+    data_copy = data.copy(deep=True)
+    if strategy == 'both':
+        data_copy.loc[data_copy[col]>para[0], col] = para[0]
+        data_copy.loc[data_copy[col]<para[1], col] = para[1]
+    elif strategy == 'top':
+        data_copy.loc[data_copy[col]>para[0], col] = para[0]
+    elif strategy == 'bottom':
+        data_copy.loc[data_copy[col]<para[1], col] = para[1]
+    return data_copy
+
+def drop_outlier(data, outlier_index):
+    data_copy = data[~outlier_index]
+    return data_copy
+
+def impute_outlier_with_avg(data, col, outlier_index, strategy='mean'):
+    """
+    impute by mean/median/mode
+    """
+    data_copy = data.copy(deep=True)
+    if strategy == 'mean':
+        data_copy.loc[outlier_index, col] = data_copy[col].mean()
+    elif strategy == 'median':
+        data_copy.loc[outlier_index, col] = data_copy[col].median()
+    elif strategy == 'mode':
+        data_copy.loc[outlier_index, col] = data_copy[col].mode()
+
+    return data_copy
