@@ -6,9 +6,9 @@ from warnings import warn
 def check_missing(data,output_path=None):
     result = pd.concat([data.isnull().sum(),data.isnull().mean()],axis=1)
     result = result.rename(index=str,columns={0:'total missing',1:'proportion'})
-    if output_path is not None:
-        result.to_csv(output_path+'missing.csv')
-        print('result saved at', output_path, 'missing.csv')
+    #if output_path is not None:
+    #   result.to_csv(output_path+'missing.csv')
+    #   print('result saved at', output_path, 'missing.csv')
     return result
 
 
@@ -19,7 +19,10 @@ def drop_missing(data,axis=0):
     
 
 def add_var_denote_NA(data,NA_col=[]):
-  
+    """
+    tạo một biến bổ sung cho biết liệu dữ liệu
+    đã bị thiếu đối với quan sát đó (1) hay không (0).
+    """
     data_copy = data.copy(deep=True)
     for i in NA_col:
         if data_copy[i].isnull().sum()>0:
@@ -31,7 +34,9 @@ def add_var_denote_NA(data,NA_col=[]):
 
 
 def impute_NA_with_arbitrary(data,impute_value,NA_col=[]):
-    
+    """
+    Fill missing data = giá trị tùy í
+    """
     data_copy = data.copy(deep=True)
     for i in NA_col:
         if data_copy[i].isnull().sum()>0:
@@ -58,7 +63,10 @@ def impute_NA_with_avg(data,strategy='mean',NA_col=[]):
 
 
 def impute_NA_with_end_of_distribution(data,NA_col=[]):
-    
+    """
+    thay thế NA bằng các giá trị ở cuối phân phối của biến đó
+    được tính = trung bình + 3 * std
+    """
     data_copy = data.copy(deep=True)
     for i in NA_col:
         if data_copy[i].isnull().sum()>0:
