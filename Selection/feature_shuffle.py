@@ -12,7 +12,7 @@ def feature_shuffle_rf(X_train, y_train,max_depth=None, class_weight=None, top_n
     #selection 
     for feature in X_train.columns:
         X_train_c = X_train.copy().reset_index(drop=True)
-        y_train_c = y_train.copy().reset_indes(drop=True)
+        y_train_c = y_train.copy().reset_index(drop=True)
 
         X_train_c[feature] = X_train_c[feature].sample(frac=1, random_state=random_state).reset_index(drop=True)
         shuff_auc = roc_auc_score(y_train_c, (model.predict_proba(X_train_c))[:, 1])
